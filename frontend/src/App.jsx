@@ -1,0 +1,42 @@
+import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
+import Header from './components/Header';
+import Footer from './components/Footer';
+import HomePage from './pages/HomePage';
+import LoginPage from './pages/LoginPage';
+import RegisterPage from './pages/RegisterPage';
+import Dashboard from './pages/Dashboard';
+import ProductListingPage from './pages/ProductListingPage';
+import ProductDetailsPage from './pages/ProductDetailsPage';
+import ServiceListingPage from './pages/ServiceListingPage';
+import ServiceRequestPage from './pages/ServiceRequestPage';
+import { AuthProvider } from './context/AuthContext';
+import { ToastContainer } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
+
+function App() {
+  return (
+    <AuthProvider>
+      <Router>
+        <div className="min-h-screen bg-gray-50 text-gray-900 font-sans">
+          <Header />
+          <main className="container mx-auto px-4 py-8">
+            <Routes>
+              <Route path="/" element={<HomePage />} />
+              <Route path="/login" element={<LoginPage />} />
+              <Route path="/register" element={<RegisterPage />} />
+              <Route path="/dashboard" element={<Dashboard />} />
+              <Route path="/products" element={<ProductListingPage />} />
+              <Route path="/products/:id" element={<ProductDetailsPage />} />
+              <Route path="/services" element={<ServiceListingPage />} />
+              <Route path="/request-service/:entrepreneurId" element={<ServiceRequestPage />} />
+            </Routes>
+          </main>
+          <Footer />
+        </div>
+      </Router>
+      <ToastContainer position="bottom-right" />
+    </AuthProvider>
+  );
+}
+
+export default App;
