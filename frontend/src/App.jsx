@@ -12,6 +12,8 @@ import ServiceRequestPage from './pages/ServiceRequestPage';
 import AddProductPage from './pages/AddProductPage';
 import EditProductPage from './pages/EditProductPage';
 import EditProfilePage from './pages/EditProfilePage';
+import EditUserProfilePage from './pages/EditUserProfilePage';
+import OrderDetailsPage from './pages/OrderDetailsPage';
 import { AuthProvider } from './context/AuthContext';
 import { ToastContainer } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
@@ -35,6 +37,8 @@ function App() {
               <Route path="/add-product" element={<AddProductPage />} />
               <Route path="/edit-product/:id" element={<EditProductPage />} />
               <Route path="/edit-profile" element={<EditProfilePage />} />
+              <Route path="/edit-user-profile" element={<EditUserProfilePage />} />
+              <Route path="/order/:id" element={<OrderDetailsPage />} />
             </Routes>
           </main>
           <Footer />

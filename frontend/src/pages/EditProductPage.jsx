@@ -1,4 +1,5 @@
-import { useState, useEffect, useContext } from 'react';
+import { useState, useEffect, useContext, useCallback } from 'react';
+import { useDropzone } from 'react-dropzone';
 import { useNavigate, useParams } from 'react-router-dom';
 import AuthContext from '../context/AuthContext';
 import api from '../services/api';
@@ -66,6 +67,33 @@ const EditProductPage = () => {
       setUpdating(false);
     }
   };
+
+  const [uploading, setUploading] = useState(false);
+
+  const onDrop = useCallback(async (acceptedFiles) => {
+    const file = acceptedFiles[0];
+    const formData = new FormData();
+    formData.append('image', file);
+    setUploading(true);
+
+    try {
+      const config = {
+        headers: {
+          'Content-Type': 'multipart/form-data',
+        },
+      };
+
+      const { data } = await api.post('/upload', formData, config);
+      setFormData((prev) => ({ ...prev, image: data }));
+      setUploading(false);
+    } catch (error) {
+           console.error(error);
+      setUploading(false);
+      setError('Image upload failed');
+    }
+  }, []);
+
+  const { getRootProps, getInputProps, isDragActive } = useDropzone({ onDrop, multiple: false });
 
   if (loading) return <div className="text-center py-20">Loading...</div>;
 
@@ -148,15 +176,28 @@ const EditProductPage = () => {
           </div>
 
           <div>
-            <label className="block text-sm font-semibold text-neutral-700 mb-2">Image URL</label>
-            <input
-              type="url"
-              name="image"
-              required
-              className="w-full px-4 py-3 rounded-lg border border-neutral-300 focus:ring-2 focus:ring-primary focus:border-transparent"
-              value={formData.image}
-              onChange={handleChange}
-            />
+            <label className="block text-sm font-semibold text-neutral-700 mb-2">Product Image</label>
+             <div 
+                {...getRootProps()} 
+                className={`border-2 border-dashed rounded-lg p-6 text-center cursor-pointer transition-colors ${isDragActive ? 'border-primary bg-primary-light/10' : 'border-neutral-300 hover:border-primary'}`}
+            >
+                <input {...getInputProps()} />
+                {
+                    uploading ? <p>Uploading...</p> : 
+                    formData.image ? (
+                        <div>
+                            <p className="text-green-600 font-medium mb-2">Image Uploaded Successfully!</p>
+                             <img src={formData.image} alt="Preview" className="h-20 mx-auto mb-2 object-cover rounded" />
+                            <p className="text-xs text-neutral-400 mt-2">Drag 'n' drop to replace</p>
+                        </div>
+                    ) : (
+                        <div>
+                            <p className="text-neutral-600 font-medium">Drag & drop an image here, or click to select one</p>
+                            <p className="text-xs text-neutral-400 mt-1">Supports JPG, PNG</p>
+                        </div>
+                    )
+                }
+            </div>
           </div>
 
           <div className="flex justify-end gap-4 pt-4">

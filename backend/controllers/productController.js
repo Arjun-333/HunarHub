@@ -103,4 +103,19 @@ const updateProduct = asyncHandler(async (req, res) => {
     }
 });
 
-module.exports = { getProducts, getProductById, createProduct, updateProduct, deleteProduct };
+// @desc    Get logged in entrepreneur's products
+// @route   GET /api/products/myproducts
+// @access  Private/Entrepreneur
+const getMyProducts = asyncHandler(async (req, res) => {
+    const entrepreneurProfile = await Entrepreneur.findOne({ user: req.user._id });
+
+    if (entrepreneurProfile) {
+        const products = await Product.find({ entrepreneur: entrepreneurProfile._id });
+        res.json(products);
+    } else {
+        res.status(404);
+        throw new Error('Entrepreneur profile not found');
+    }
+});
+
+module.exports = { getProducts, getProductById, createProduct, updateProduct, deleteProduct, getMyProducts };

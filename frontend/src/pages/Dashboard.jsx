@@ -8,6 +8,8 @@ const Dashboard = () => {
   const navigate = useNavigate();
   const [orders, setOrders] = useState([]);
   const [requests, setRequests] = useState([]);
+  const [sales, setSales] = useState([]);
+  const [myProducts, setMyProducts] = useState([]);
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
@@ -26,6 +28,10 @@ const Dashboard = () => {
         } else if (user.role === 'entrepreneur') {
           const requestsRes = await api.get('/service-requests/my');
           setRequests(requestsRes.data);
+          const salesRes = await api.get('/orders/entrepreneur');
+          setSales(salesRes.data);
+          const productsRes = await api.get('/products/myproducts');
+          setMyProducts(productsRes.data);
         }
       } catch (error) {
         console.error("Error fetching dashboard data", error);
@@ -53,7 +59,10 @@ const Dashboard = () => {
         
         {user.role === 'customer' && (
           <div>
-            <p className="mb-6 text-neutral-600">Here you can view your orders and service requests.</p>
+            <div className="flex justify-between items-end mb-6">
+                <p className="text-neutral-600">Here you can view your orders and service requests.</p>
+                <button onClick={() => navigate('/edit-user-profile')} className="text-primary hover:text-primary-dark font-medium underline">Edit Profile</button>
+            </div>
             <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                <div className="bg-white border border-neutral-200 p-6 rounded-xl shadow-md">
                   <h3 className="font-heading font-semibold text-xl mb-4 text-neutral-900">My Orders ({orders.length})</h3>
@@ -100,8 +109,52 @@ const Dashboard = () => {
                         <button onClick={() => navigate('/add-product')} className="bg-accent hover:bg-accent-dark text-white px-4 py-2 rounded-lg font-medium transition-colors">Add Product</button>
                    </div>
                    
-                   {/* Product List Placeholder - Ideally we should fetch and list products here too */}
-                   <p className="text-center text-neutral-400 py-4 italic">To see/edit your products, go to the <span className="text-primary font-semibold cursor-pointer" onClick={() => navigate('/products')}>Products Page</span> and look for items with your name.</p>
+                   {myProducts.length === 0 ? <p className="text-neutral-500 italic">You haven't added any products yet.</p> : (
+                     <ul className="space-y-3">
+                        {myProducts.map(product => (
+                            <li key={product._id} className="bg-neutral-50 p-4 rounded-lg border border-neutral-200 flex justify-between items-center">
+                                <div>
+                                    <span className="font-semibold text-neutral-900 block">{product.title}</span>
+                                    <span className="text-sm text-neutral-600">₹{product.price} | Stock: {product.stock}</span>
+                                </div>
+                                <button
+                                    onClick={() => navigate(`/edit-product/${product._id}`)}
+                                    className="text-white text-sm bg-neutral-600 hover:bg-neutral-700 px-3 py-1.5 rounded-lg transition-colors font-medium"
+                                >
+                                    Edit
+                                </button>
+                            </li>
+                        ))}
+                     </ul>
+                   )}
+                </div>
+
+                <div className="bg-white border border-neutral-200 p-6 rounded-xl shadow-md">
+                   <h3 className="font-heading font-semibold text-xl mb-4 text-neutral-900">Recent Sales ({sales.length})</h3>
+                   {sales.length === 0 ? <p className="text-neutral-500">No sales yet.</p> : (
+                     <ul className="space-y-3">
+                        {sales.map(sale => (
+                            <li key={sale._id} className="bg-green-50 p-4 rounded-lg border border-green-200">
+                                <div className="flex justify-between items-start">
+                                    <div>
+                                        <span className="font-semibold text-neutral-900">Order #{sale._id.substring(0, 8)}</span>
+                                        <span className="block text-sm text-neutral-600 mt-1">To: {sale.customer?.name || 'Customer'}</span>
+                                    </div>
+                                    <span className="font-bold text-primary">₹{sale.totalAmount}</span>
+                                </div>
+                                <div className="mt-2 text-sm text-neutral-500">
+                                    Items: {sale.orderItems.map(i => i.name).join(', ')}
+                                </div>
+                                <button
+                                    onClick={() => navigate(`/order/${sale._id}`)}
+                                    className="mt-3 text-sm bg-neutral-100 hover:bg-neutral-200 text-neutral-700 px-3 py-1.5 rounded-lg transition-colors font-medium w-full"
+                                >
+                                    View Details
+                                </button>
+                            </li>
+                        ))}
+                     </ul>
+                   )}
                 </div>
                <div className="bg-white border border-neutral-200 p-6 rounded-xl shadow-md">
                   <h3 className="font-heading font-semibold text-xl mb-4 text-neutral-900">Incoming Requests ({requests.length})</h3>

@@ -23,6 +23,10 @@ app.use('/api/service-requests', require('./routes/serviceRoutes'));
 app.use('/api/orders', require('./routes/orderRoutes'));
 app.use('/api/entrepreneurs', require('./routes/entrepreneurRoutes'));
 app.use('/api/admin', require('./routes/adminRoutes'));
+app.use('/api/upload', require('./routes/uploadRoutes'));
+
+const path = require('path');
+app.use('/uploads', express.static(path.join(__dirname, '/uploads')));
 
 app.get('/', (req, res) => {
     res.send('HunarHub API is running...');
