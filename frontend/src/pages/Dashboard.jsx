@@ -44,7 +44,12 @@ const Dashboard = () => {
     <div className="min-h-screen bg-neutral-50 py-12">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <h1 className="text-4xl font-heading font-bold mb-2 text-neutral-900">Welcome, {user.name}!</h1>
-        <p className="text-neutral-600 text-lg mb-8">Your Role: <span className="text-primary font-semibold">{user.role}</span></p>
+        <div className="flex justify-between items-end mb-8">
+            <p className="text-neutral-600 text-lg">Your Role: <span className="text-primary font-semibold">{user.role}</span></p>
+            {user.role === 'entrepreneur' && (
+                <button onClick={() => navigate('/edit-profile')} className="text-primary hover:text-primary-dark font-medium underline">Edit Business Profile</button>
+            )}
+        </div>
         
         {user.role === 'customer' && (
           <div>
@@ -88,10 +93,16 @@ const Dashboard = () => {
           <div>
             <p className="mb-6 text-neutral-600">Manage your products, services, and incoming requests.</p>
             <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-               <div className="bg-white border border-neutral-200 p-6 rounded-xl shadow-md">
-                  <h3 className="font-heading font-semibold text-xl mb-4 text-neutral-900">My Products</h3>
-                  <button className="bg-accent hover:bg-accent-dark text-white px-4 py-2 rounded-lg font-medium transition-colors">Add Product</button>
-               </div>
+                <div className="bg-white border border-neutral-200 p-6 rounded-xl shadow-md">
+                   <h3 className="font-heading font-semibold text-xl mb-4 text-neutral-900">My Products</h3>
+                   <div className="flex justify-between items-center mb-4">
+                        <span className="text-neutral-500 text-sm">Manage your inventory</span>
+                        <button onClick={() => navigate('/add-product')} className="bg-accent hover:bg-accent-dark text-white px-4 py-2 rounded-lg font-medium transition-colors">Add Product</button>
+                   </div>
+                   
+                   {/* Product List Placeholder - Ideally we should fetch and list products here too */}
+                   <p className="text-center text-neutral-400 py-4 italic">To see/edit your products, go to the <span className="text-primary font-semibold cursor-pointer" onClick={() => navigate('/products')}>Products Page</span> and look for items with your name.</p>
+                </div>
                <div className="bg-white border border-neutral-200 p-6 rounded-xl shadow-md">
                   <h3 className="font-heading font-semibold text-xl mb-4 text-neutral-900">Incoming Requests ({requests.length})</h3>
                   {requests.length === 0 ? <p className="text-neutral-500">No new requests.</p> : (

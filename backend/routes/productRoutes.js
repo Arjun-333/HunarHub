@@ -4,11 +4,12 @@ const {
     getProducts,
     getProductById,
     createProduct,
+    updateProduct,
     deleteProduct,
 } = require('../controllers/productController');
 const { protect, entrepreneur } = require('../middleware/authMiddleware');
 
 router.route('/').get(getProducts).post(protect, entrepreneur, createProduct);
-router.route('/:id').get(getProductById).delete(protect, entrepreneur, deleteProduct);
+router.route('/:id').get(getProductById).put(protect, entrepreneur, updateProduct).delete(protect, entrepreneur, deleteProduct);
 
 module.exports = router;

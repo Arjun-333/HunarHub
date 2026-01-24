@@ -1,12 +1,13 @@
 const asyncHandler = require('express-async-handler');
 const Product = require('../models/Product');
+const Entrepreneur = require('../models/Entrepreneur');
 
 // @desc    Fetch all products
 // @route   GET /api/products
 // @access  Public
 // @returns {Array} List of products with entrepreneur details
 const getProducts = asyncHandler(async (req, res) => {
-    const products = await Product.find({}).populate('entrepreneur', 'businessName');
+    const products = await Product.find({}).populate('entrepreneur', 'businessName user');
     res.json(products);
 });
 
@@ -14,7 +15,7 @@ const getProducts = asyncHandler(async (req, res) => {
 // @route   GET /api/products/:id
 // @access  Public
 const getProductById = asyncHandler(async (req, res) => {
-    const product = await Product.findById(req.params.id).populate('entrepreneur', 'businessName');
+    const product = await Product.findById(req.params.id).populate('entrepreneur', 'businessName user');
 
     if (product) {
         res.json(product);
@@ -30,8 +31,15 @@ const getProductById = asyncHandler(async (req, res) => {
 const createProduct = asyncHandler(async (req, res) => {
     const { title, description, price, category, stock, images } = req.body;
 
+    const entrepreneurProfile = await Entrepreneur.findOne({ user: req.user._id });
+
+    if (!entrepreneurProfile) {
+        res.status(404);
+        throw new Error('Entrepreneur profile not found');
+    }
+
     const product = new Product({
-        entrepreneur: req.user._id, // Assuming user is linked to entrepreneur logic or we fetch entrepreneur ID
+        entrepreneur: entrepreneurProfile._id,
         title,
         description,
         price,
@@ -49,9 +57,10 @@ const createProduct = asyncHandler(async (req, res) => {
 // @access  Private/Entrepreneur
 const deleteProduct = asyncHandler(async (req, res) => {
     const product = await Product.findById(req.params.id);
+    const entrepreneurProfile = await Entrepreneur.findOne({ user: req.user._id });
 
     if (product) {
-        if (product.entrepreneur.toString() !== req.user._id.toString()) {
+        if (!entrepreneurProfile || product.entrepreneur.toString() !== entrepreneurProfile._id.toString()) {
              res.status(401);
              throw new Error('Not authorized to delete this product');
         }
@@ -63,4 +72,35 @@ const deleteProduct = asyncHandler(async (req, res) => {
     }
 });
 
-module.exports = { getProducts, getProductById, createProduct, deleteProduct };
+// @desc    Update a product
+// @route   PUT /api/products/:id
+// @access  Private/Entrepreneur
+const updateProduct = asyncHandler(async (req, res) => {
+    const { title, description, price, category, stock, images } = req.body;
+
+    const product = await Product.findById(req.params.id);
+    const entrepreneurProfile = await Entrepreneur.findOne({ user: req.user._id });
+
+    if (product) {
+        // Check if entrepreneur profile exists and matches product owner
+        if (!entrepreneurProfile || product.entrepreneur.toString() !== entrepreneurProfile._id.toString()) {
+             res.status(401);
+             throw new Error('Not authorized to update this product');
+        }
+
+        product.title = title || product.title;
+        product.description = description || product.description;
+        product.price = price || product.price;
+        product.category = category || product.category;
+        product.stock = stock || product.stock;
+        product.images = images || product.images;
+
+        const updatedProduct = await product.save();
+        res.json(updatedProduct);
+    } else {
+        res.status(404);
+        throw new Error('Product not found');
+    }
+});
+
+module.exports = { getProducts, getProductById, createProduct, updateProduct, deleteProduct };

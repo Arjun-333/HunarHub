@@ -82,9 +82,19 @@ const ProductDetailsPage = () => {
               <h1 className="text-3xl font-heading font-bold mb-4 text-neutral-900">{product.title}</h1>
               <p className="text-neutral-600 mb-6 leading-relaxed">{product.description}</p>
               
-              <div className="flex items-center mb-6 p-4 bg-neutral-50 rounded-lg border border-neutral-100">
-                  <span className="text-neutral-500 text-sm mr-2">Sold by:</span>
-                  <span className="font-semibold text-primary">{product.entrepreneur?.businessName || 'Artisan'}</span>
+              <div className="flex items-center mb-6 p-4 bg-neutral-50 rounded-lg border border-neutral-100 justify-between">
+                 <div className="flex items-center">
+                    <span className="text-neutral-500 text-sm mr-2">Sold by:</span>
+                    <span className="font-semibold text-primary">{product.entrepreneur?.businessName || 'Artisan'}</span>
+                 </div>
+                 {user && product.entrepreneur?.user && user._id === product.entrepreneur.user && (
+                     <button
+                        onClick={() => navigate(`/edit-product/${product._id}`)}
+                        className="text-white text-sm bg-neutral-600 hover:bg-neutral-700 px-3 py-1.5 rounded-lg transition-colors font-medium"
+                     >
+                       Edit Product
+                     </button>
+                 )}
               </div>
             </div>
             
