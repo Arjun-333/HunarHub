@@ -17,9 +17,9 @@ function App() {
   return (
     <AuthProvider>
       <Router>
-        <div className="min-h-screen bg-gray-50 text-gray-900 font-sans">
+        <div className="min-h-screen flex flex-col bg-neutral-50">
           <Header />
-          <main className="container mx-auto px-4 py-8">
+          <main className="flex-1">
             <Routes>
               <Route path="/" element={<HomePage />} />
               <Route path="/login" element={<LoginPage />} />

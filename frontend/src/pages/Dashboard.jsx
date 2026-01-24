@@ -24,8 +24,6 @@ const Dashboard = () => {
           const requestsRes = await api.get('/service-requests/my');
           setRequests(requestsRes.data);
         } else if (user.role === 'entrepreneur') {
-          // For entrepreneur, we might want to fetch products and incoming requests
-          // For now reusing the same endpoint if it returns relevant data, or just requests
           const requestsRes = await api.get('/service-requests/my');
           setRequests(requestsRes.data);
         }
@@ -40,43 +38,43 @@ const Dashboard = () => {
   }, [user, navigate]);
 
   if (!user) return null;
-  if (loading) return <div className="text-center py-10">Loading dashboard...</div>;
+  if (loading) return <div className="text-center py-20 text-neutral-600">Loading dashboard...</div>;
 
   return (
-    <div className="py-10">
-      <h1 className="text-3xl font-bold mb-6">Welcome, {user.name}!</h1>
-      <div className="bg-white p-6 rounded-lg shadow-md">
-        <h2 className="text-xl font-semibold mb-4">Your Role: {user.role}</h2>
+    <div className="min-h-screen bg-neutral-50 py-12">
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <h1 className="text-4xl font-heading font-bold mb-2 text-neutral-900">Welcome, {user.name}!</h1>
+        <p className="text-neutral-600 text-lg mb-8">Your Role: <span className="text-primary font-semibold">{user.role}</span></p>
         
         {user.role === 'customer' && (
           <div>
-            <p className="mb-4">Here you can view your orders and service requests.</p>
+            <p className="mb-6 text-neutral-600">Here you can view your orders and service requests.</p>
             <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-               <div className="border p-4 rounded bg-blue-50">
-                  <h3 className="font-bold mb-2">My Orders ({orders.length})</h3>
-                  {orders.length === 0 ? <p>No orders yet.</p> : (
-                    <ul className="space-y-2">
+               <div className="bg-white border border-neutral-200 p-6 rounded-xl shadow-md">
+                  <h3 className="font-heading font-semibold text-xl mb-4 text-neutral-900">My Orders ({orders.length})</h3>
+                  {orders.length === 0 ? <p className="text-neutral-500">No orders yet.</p> : (
+                    <ul className="space-y-3">
                         {orders.map(order => (
-                            <li key={order._id} className="bg-white p-2 rounded shadow-sm">
-                                <span className="font-semibold">Order #{order._id.substring(0, 8)}</span>
-                                <span className="block text-sm">Total: ₹{order.totalAmount}</span>
-                                <span className="block text-xs text-gray-500">{new Date(order.createdAt).toLocaleDateString()}</span>
+                            <li key={order._id} className="bg-neutral-50 p-4 rounded-lg border border-neutral-200">
+                                <span className="font-semibold text-neutral-900">Order #{order._id.substring(0, 8)}</span>
+                                <span className="block text-sm text-neutral-600 mt-1">Total: ₹{order.totalAmount}</span>
+                                <span className="block text-xs text-neutral-400 mt-1">{new Date(order.createdAt).toLocaleDateString()}</span>
                             </li>
                         ))}
                     </ul>
                   )}
                </div>
-               <div className="border p-4 rounded bg-green-50">
-                  <h3 className="font-bold mb-2">My Service Requests ({requests.length})</h3>
-                  {requests.length === 0 ? <p>No requests yet.</p> : (
-                    <ul className="space-y-2">
+               <div className="bg-white border border-neutral-200 p-6 rounded-xl shadow-md">
+                  <h3 className="font-heading font-semibold text-xl mb-4 text-neutral-900">My Service Requests ({requests.length})</h3>
+                  {requests.length === 0 ? <p className="text-neutral-500">No requests yet.</p> : (
+                    <ul className="space-y-3">
                         {requests.map(req => (
-                            <li key={req._id} className="bg-white p-2 rounded shadow-sm">
-                                <span className="font-semibold">{req.serviceType}</span>
-                                <span className={`block text-xs font-bold ${req.status === 'pending' ? 'text-yellow-600' : 'text-green-600'}`}>
+                            <li key={req._id} className="bg-neutral-50 p-4 rounded-lg border border-neutral-200">
+                                <span className="font-semibold text-neutral-900">{req.serviceType}</span>
+                                <span className={`block text-xs font-bold mt-1 ${req.status === 'pending' ? 'text-accent' : 'text-primary'}`}>
                                     Status: {req.status}
                                 </span>
-                                <span className="block text-sm text-gray-600">{req.description}</span>
+                                <span className="block text-sm text-neutral-600 mt-1">{req.description}</span>
                             </li>
                         ))}
                     </ul>
@@ -88,25 +86,24 @@ const Dashboard = () => {
 
         {user.role === 'entrepreneur' && (
           <div>
-            <p className="mb-4">Manage your products, services, and incoming requests.</p>
+            <p className="mb-6 text-neutral-600">Manage your products, services, and incoming requests.</p>
             <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-               <div className="border p-4 rounded bg-purple-50">
-                  <h3 className="font-bold mb-2">My Products</h3>
-                  <button className="bg-indigo-600 text-white px-3 py-1 rounded mt-2 text-sm hover:bg-indigo-700">Add Product</button>
-                  {/* Product list fetching would go here */}
+               <div className="bg-white border border-neutral-200 p-6 rounded-xl shadow-md">
+                  <h3 className="font-heading font-semibold text-xl mb-4 text-neutral-900">My Products</h3>
+                  <button className="bg-accent hover:bg-accent-dark text-white px-4 py-2 rounded-lg font-medium transition-colors">Add Product</button>
                </div>
-               <div className="border p-4 rounded bg-yellow-50">
-                  <h3 className="font-bold mb-2">Incoming Requests ({requests.length})</h3>
-                  {requests.length === 0 ? <p>No new requests.</p> : (
-                    <ul className="space-y-2">
+               <div className="bg-white border border-neutral-200 p-6 rounded-xl shadow-md">
+                  <h3 className="font-heading font-semibold text-xl mb-4 text-neutral-900">Incoming Requests ({requests.length})</h3>
+                  {requests.length === 0 ? <p className="text-neutral-500">No new requests.</p> : (
+                    <ul className="space-y-3">
                         {requests.map(req => (
-                            <li key={req._id} className="bg-white p-2 rounded shadow-sm">
-                                <span className="font-semibold">{req.serviceType}</span>
-                                <span className="block text-sm">From: {req.customer?.name || 'Customer'}</span>
-                                <span className="block text-xs text-gray-500">{req.description}</span>
-                                <div className="mt-2">
-                                    <button className="bg-green-500 text-white text-xs px-2 py-1 rounded mr-2">Accept</button>
-                                    <button className="bg-red-500 text-white text-xs px-2 py-1 rounded">Reject</button>
+                            <li key={req._id} className="bg-neutral-50 p-4 rounded-lg border border-neutral-200">
+                                <span className="font-semibold text-neutral-900">{req.serviceType}</span>
+                                <span className="block text-sm text-neutral-600 mt-1">From: {req.customer?.name || 'Customer'}</span>
+                                <span className="block text-xs text-neutral-500 mt-1">{req.description}</span>
+                                <div className="mt-3 flex gap-2">
+                                    <button className="bg-primary hover:bg-primary-light text-white text-sm px-3 py-1.5 rounded-lg transition-colors">Accept</button>
+                                    <button className="bg-red-500 hover:bg-red-600 text-white text-sm px-3 py-1.5 rounded-lg transition-colors">Reject</button>
                                 </div>
                             </li>
                         ))}
@@ -119,10 +116,10 @@ const Dashboard = () => {
 
         {user.role === 'admin' && (
           <div>
-            <p className="mb-4">Manage platform verifications and users.</p>
-            <div className="border p-4 rounded bg-red-50">
-               <h3 className="font-bold">Pending Verifications</h3>
-               <p>No pending verifications.</p>
+            <p className="mb-6 text-neutral-600">Manage platform verifications and users.</p>
+            <div className="bg-white border border-neutral-200 p-6 rounded-xl shadow-md">
+               <h3 className="font-heading font-semibold text-xl mb-2 text-neutral-900">Pending Verifications</h3>
+               <p className="text-neutral-500">No pending verifications.</p>
             </div>
           </div>
         )}

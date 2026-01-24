@@ -59,54 +59,59 @@ const ProductDetailsPage = () => {
     }
   };
 
-  if (loading) return <div className="text-center py-10">Loading...</div>;
-  if (error) return <div className="text-center py-10 text-red-600">{error}</div>;
-  if (!product) return <div className="text-center py-10">Product not found</div>;
+  if (loading) return <div className="text-center py-20 text-neutral-600">Loading...</div>;
+  if (error) return <div className="text-center py-20 text-red-600">{error}</div>;
+  if (!product) return <div className="text-center py-20 text-neutral-600">Product not found</div>;
 
   return (
-    <div className="py-10">
-      <div className="bg-white rounded-lg shadow-md overflow-hidden max-w-4xl mx-auto flex flex-col md:flex-row">
-        <div className="md:w-1/2">
-          <img
-            src={product.images[0] || 'https://via.placeholder.com/500'}
-            alt={product.title}
-            className="w-full h-96 object-cover"
-          />
-        </div>
-        <div className="p-8 md:w-1/2 flex flex-col justify-between">
-          <div>
-            <h1 className="text-3xl font-bold mb-4">{product.title}</h1>
-            <p className="text-gray-600 mb-6">{product.description}</p>
-            <div className="flex items-center mb-4">
-                <span className="text-gray-700 font-semibold mr-2">Category:</span>
-                <span className="bg-gray-200 text-gray-800 px-2 py-1 rounded text-sm">{product.category}</span>
-            </div>
-            <p className="text-sm text-gray-500 mb-6">Sold by: {product.entrepreneur?.businessName}</p>
+    <div className="py-12 bg-neutral-50 min-h-screen">
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div className="bg-white rounded-xl shadow-lg overflow-hidden border border-neutral-200 flex flex-col md:flex-row">
+          <div className="md:w-1/2 h-96 md:h-auto bg-neutral-100 relative">
+            <img
+              src={product.images[0] || 'https://via.placeholder.com/500'}
+              alt={product.title}
+              className="w-full h-full object-cover"
+            />
           </div>
-          
-          <div>
-            <div className="flex items-center justify-between mb-6">
-                <span className="text-3xl font-bold text-indigo-600">₹{product.price}</span>
-                <div className="flex items-center border rounded">
-                    <button 
-                        className="px-3 py-1 bg-gray-100 hover:bg-gray-200"
-                        onClick={() => setQuantity(Math.max(1, quantity - 1))}
-                    >-</button>
-                    <span className="px-4 py-1">{quantity}</span>
-                    <button 
-                        className="px-3 py-1 bg-gray-100 hover:bg-gray-200"
-                        onClick={() => setQuantity(Math.min(product.stock, quantity + 1))}
-                    >+</button>
-                </div>
+          <div className="p-8 md:w-1/2 flex flex-col justify-between">
+            <div>
+              <div className="text-sm text-accent font-bold uppercase tracking-wider mb-2">
+                {product.category}
+              </div>
+              <h1 className="text-3xl font-heading font-bold mb-4 text-neutral-900">{product.title}</h1>
+              <p className="text-neutral-600 mb-6 leading-relaxed">{product.description}</p>
+              
+              <div className="flex items-center mb-6 p-4 bg-neutral-50 rounded-lg border border-neutral-100">
+                  <span className="text-neutral-500 text-sm mr-2">Sold by:</span>
+                  <span className="font-semibold text-primary">{product.entrepreneur?.businessName || 'Artisan'}</span>
+              </div>
             </div>
             
-            <button
-              onClick={handleBuyNow}
-              className="w-full bg-indigo-600 text-white py-3 rounded-lg font-bold text-lg hover:bg-indigo-700 transition disabled:bg-gray-400"
-              disabled={product.stock === 0}
-            >
-              {product.stock > 0 ? 'Buy Now' : 'Out of Stock'}
-            </button>
+            <div className="border-t border-neutral-100 pt-6">
+              <div className="flex items-center justify-between mb-8">
+                  <span className="text-4xl font-heading font-bold text-primary">₹{product.price}</span>
+                  <div className="flex items-center border border-neutral-300 rounded-lg bg-white">
+                      <button 
+                          className="px-4 py-2 hover:bg-neutral-100 text-neutral-600 transition"
+                          onClick={() => setQuantity(Math.max(1, quantity - 1))}
+                      >-</button>
+                      <span className="px-4 py-2 font-medium text-neutral-900 border-x border-neutral-300">{quantity}</span>
+                      <button 
+                          className="px-4 py-2 hover:bg-neutral-100 text-neutral-600 transition"
+                          onClick={() => setQuantity(Math.min(product.stock, quantity + 1))}
+                      >+</button>
+                  </div>
+              </div>
+              
+              <button
+                onClick={handleBuyNow}
+                className="w-full bg-accent hover:bg-accent-dark text-white py-4 rounded-lg font-heading font-bold text-lg transition-all shadow-md disabled:bg-neutral-300 disabled:cursor-not-allowed"
+                disabled={product.stock === 0}
+              >
+                {product.stock > 0 ? 'Buy Now' : 'Out of Stock'}
+              </button>
+            </div>
           </div>
         </div>
       </div>

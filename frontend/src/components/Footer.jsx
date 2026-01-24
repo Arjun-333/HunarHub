@@ -2,48 +2,78 @@ import { Link } from 'react-router-dom';
 
 const Footer = () => {
   return (
-    <footer className="bg-primary-dark text-white py-16 mt-auto">
-      <div className="container mx-auto px-6">
-        <div className="grid grid-cols-1 md:grid-cols-4 gap-12">
-          <div>
-            <h3 className="text-2xl font-serif font-bold mb-6 text-white">HunarHub</h3>
-            <p className="text-neutral-300 text-sm leading-relaxed">
-              Empowering local micro-entrepreneurs by connecting them with the digital world. We believe in the power of handmade and local skills.
+    <footer className="bg-primary text-neutral-100 mt-auto">
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
+        <div className="grid grid-cols-1 md:grid-cols-4 gap-8">
+          {/* Brand */}
+          <div className="col-span-1">
+            <h3 className="text-2xl font-heading font-bold text-white mb-4">
+              HunarHub
+            </h3>
+            <p className="text-neutral-200 text-sm">
+              Connecting artisans with customers. Discover authentic handmade treasures and expert services.
             </p>
           </div>
+
+          {/* Quick Links */}
           <div>
-            <h4 className="font-bold mb-6 text-secondary">Quick Links</h4>
-            <ul className="space-y-3 text-sm text-neutral-300">
-              <li><Link to="/" className="hover:text-white transition">Home</Link></li>
-              <li><Link to="/products" className="hover:text-white transition">Marketplace</Link></li>
-              <li><Link to="/services" className="hover:text-white transition">Find Experts</Link></li>
+            <h4 className="text-lg font-heading font-semibold text-white mb-4">
+              Quick Links
+            </h4>
+            <ul className="space-y-2">
+              <li>
+                <Link to="/" className="text-neutral-200 hover:text-accent transition-colors">
+                  Home
+                </Link>
+              </li>
+              <li>
+                <Link to="/products" className="text-neutral-200 hover:text-accent transition-colors">
+                  Products
+                </Link>
+              </li>
+              <li>
+                <Link to="/services" className="text-neutral-200 hover:text-accent transition-colors">
+                  Services
+                </Link>
+              </li>
             </ul>
           </div>
+
+          {/* For Sellers */}
           <div>
-            <h4 className="font-bold mb-6 text-secondary">Support</h4>
-            <ul className="space-y-3 text-sm text-neutral-300">
-              <li><a href="#" className="hover:text-white transition">Help Center</a></li>
-              <li><a href="#" className="hover:text-white transition">Safety Information</a></li>
-              <li><a href="#" className="hover:text-white transition">Contact Us</a></li>
+            <h4 className="text-lg font-heading font-semibold text-white mb-4">
+              For Sellers
+            </h4>
+            <ul className="space-y-2">
+              <li>
+                <Link to="/register" className="text-neutral-200 hover:text-accent transition-colors">
+                  Become a Seller
+                </Link>
+              </li>
+              <li>
+                <Link to="/dashboard" className="text-neutral-200 hover:text-accent transition-colors">
+                  Dashboard
+                </Link>
+              </li>
             </ul>
           </div>
+
+          {/* Contact */}
           <div>
-            <h4 className="font-bold mb-6 text-secondary">Newsletter</h4>
-            <p className="text-neutral-300 text-sm mb-4">Subscribe for updates on new artisans.</p>
-            <div className="flex">
-              <input 
-                type="email" 
-                placeholder="Your email" 
-                className="bg-primary-light text-white px-4 py-2 rounded-l border-none focus:ring-2 focus:ring-secondary w-full placeholder-neutral-400"
-              />
-              <button className="bg-secondary px-5 py-2 rounded-r hover:bg-secondary-light transition font-medium">
-                Join
-              </button>
-            </div>
+            <h4 className="text-lg font-heading font-semibold text-white mb-4">
+              Contact
+            </h4>
+            <ul className="space-y-2 text-neutral-200 text-sm">
+              <li>Email: support@hunarhub.com</li>
+              <li>Phone: +91 1234567890</li>
+            </ul>
           </div>
         </div>
-        <div className="border-t border-primary-light mt-12 pt-8 text-center text-neutral-400 text-sm">
-          &copy; {new Date().getFullYear()} HunarHub. All rights reserved.
+
+        <div className="border-t border-primary-light mt-8 pt-8 text-center">
+          <p className="text-neutral-200 text-sm">
+            &copy; {new Date().getFullYear()} HunarHub. All rights reserved.
+          </p>
         </div>
       </div>
     </footer>

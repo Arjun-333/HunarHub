@@ -8,26 +8,31 @@ export default {
     extend: {
       colors: {
         primary: {
-          DEFAULT: '#14532d', // green-900
-          light: '#166534',   // green-800
-          dark: '#052e16',    // green-950
+          DEFAULT: '#115e59', // teal-700
+          light: '#0f766e',   // teal-600
+          dark: '#134e4a',    // teal-800
         },
-        secondary: {
-          DEFAULT: '#b45309', // amber-700
-          light: '#d97706',   // amber-600
-          dark: '#78350f',    // amber-900
+        accent: {
+          DEFAULT: '#f97316', // orange-500
+          light: '#fb923c',   // orange-400
+          dark: '#ea580c',    // orange-600
         },
         neutral: {
-          50: '#f9fafb',
-          100: '#f3f4f6',
-          200: '#e5e7eb',
-          800: '#1f2937',
-          900: '#111827',
+          50: '#fafaf9',
+          100: '#f5f5f4',
+          200: '#e7e5e4',
+          300: '#d6d3d1',
+          400: '#a8a29e',
+          500: '#78716c',
+          600: '#57534e',
+          700: '#44403c',
+          800: '#292524',
+          900: '#1c1917',
         }
       },
       fontFamily: {
         sans: ['Inter', 'system-ui', 'sans-serif'],
-        serif: ['Merriweather', 'serif'],
+        heading: ['Poppins', 'sans-serif'],
       }
     },
   },
