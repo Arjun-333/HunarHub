@@ -2,7 +2,7 @@
 
 HunarHub is a full-stack web application designed to connect local micro-entrepreneurs (artisans, tailors, potters, etc.) with customers. It provides a platform for entrepreneurs to showcase their skills and products, and for customers to find and support local talent.
 
-## 🚀 Features
+## Features
 
 ### For Customers
 
@@ -24,14 +24,14 @@ HunarHub is a full-stack web application designed to connect local micro-entrepr
 - **Verification**: Verify new entrepreneur profiles to ensure quality.
 - **Platform Management**: Oversee users and content.
 
-## 🛠️ Tech Stack
+## Tech Stack
 
 - **Frontend**: React.js, Tailwind CSS, Vite, React Router, Axios
 - **Backend**: Node.js, Express.js, MongoDB, Mongoose
 - **Authentication**: JWT (JSON Web Tokens) with Role-Based Access Control (RBAC)
 - **Notifications**: React Toastify
 
-## ⚙️ Installation & Setup
+## Installation & Setup
 
 ### Prerequisites
 
